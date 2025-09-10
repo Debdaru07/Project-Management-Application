@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../notifiers/project_notifier.dart';
@@ -42,6 +43,11 @@ class _ProjectsPageState extends State<ProjectsPage> {
               AppButton(
                 text: _isGridView ? 'Switch to Table' : 'Switch to Grid',
                 onPressed: () => setState(() => _isGridView = !_isGridView),
+              ),
+              const SizedBox(width: 10),
+              AppButton(
+                text: 'Add Project',
+                onPressed: () => context.push('/add-project'),
               ),
             ],
           ),
