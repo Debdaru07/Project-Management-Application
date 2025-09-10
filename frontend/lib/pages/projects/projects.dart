@@ -1,0 +1,157 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../notifiers/project_notifier.dart';
+import '../../utils/components/app_button.dart';
+import '../../utils/components/app_searchable_dropdowns.dart';
+import '../../utils/components/app_textfield.dart';
+import '../../utils/features/project_helper.dart';
+
+class ProjectsPage extends StatefulWidget {
+  const ProjectsPage({super.key});
+
+  @override
+  State<ProjectsPage> createState() => _ProjectsPageState();
+}
+
+class _ProjectsPageState extends State<ProjectsPage> {
+  bool _isGridView = false;
+  final TextEditingController _searchController = TextEditingController();
+  String _selectedStatus = 'all';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ProjectNotifier>(
+      builder: (context, notifier, child) {
+        final filteredProjects = ProjectHelpers.filterProjects(
+          notifier.projects,
+          _searchController.text,
+          _selectedStatus,
+        );
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Projects'),
+            actions: [
+              AppButton(
+                text: _isGridView ? 'Switch to Table' : 'Switch to Grid',
+                onPressed: () => setState(() => _isGridView = !_isGridView),
+              ),
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppTextField(
+                        label: 'Search Projects',
+                        controller: _searchController,
+                        hint: 'Enter project title...',
+                        onChanged: (_) => setState(() {}),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: AppSearchableDropdown<String>(
+                        items: ['all', 'in_progress', 'completed'],
+                        label: 'Filter by Status',
+                        initialValue: 'all',
+                        itemAsString: (status) => status,
+                        onChanged:
+                            (value) => setState(
+                              () => _selectedStatus = value ?? 'all',
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child:
+                      _isGridView
+                          ? GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 1.5,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                ),
+                            itemCount: filteredProjects.length,
+                            itemBuilder: (context, index) {
+                              final project = filteredProjects[index];
+                              return Card(
+                                color: Theme.of(context).colorScheme.surface,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        project.title,
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.titleLarge,
+                                      ),
+                                      Text(
+                                        project.description,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text('Status: ${project.status}'),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                          : DataTable(
+                            columns: const [
+                              DataColumn(label: Text('Title')),
+                              DataColumn(label: Text('Description')),
+                              DataColumn(label: Text('Status')),
+                              DataColumn(label: Text('Created At')),
+                            ],
+                            rows:
+                                filteredProjects.map((project) {
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Text(project.title)),
+                                      DataCell(
+                                        Text(
+                                          project.description,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      DataCell(Text(project.status)),
+                                      DataCell(
+                                        Text(
+                                          ProjectHelpers.formatDate(
+                                            project.createdAt,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
+                          ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
