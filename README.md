@@ -7,9 +7,12 @@ To keep the codebase clean, scalable, and easy to collaborate on, please follow 
 
 ## 📂 Project Structure
 
-├── backend/ → All backend-intensive code (Python services, APIs, DB integration, etc.)
-├── frontend/ → All frontend-intensive code (Flutter Web, UI, State Management, etc.)
-└── docs/ → Documentation, PRDs, contribution guides, etc.
+\`\`\`
+.
+├── backend/   → All backend-intensive code (Python services, APIs, DB integration, etc.)
+├── frontend/  → All frontend-intensive code (Flutter Web, UI, State Management, etc.)
+└── docs/      → Documentation, PRDs, contribution guides, etc.
+\`\`\`
 
 
 ---
