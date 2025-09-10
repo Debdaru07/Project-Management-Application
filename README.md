@@ -1,3 +1,27 @@
+# 📖 Project Brief
+
+This project is a **Task & Project Management MVP** built with the following stack:
+
+- **Backend:** Python REST API integrated with **Supabase** (PostgreSQL as DB).  
+- **Frontend:** Flutter Web application for cross-platform web UI.  
+- **Hosting:** Backend services hosted on free platforms (e.g., Render).  
+
+### 🎯 Core Features
+- **Projects**  
+  - Lifecycle: `draft → in progress → completed`  
+  - Create, update, track overall progress.  
+
+- **Tasks**  
+  - Lifecycle: `todo → in progress → done`  
+  - Linked to a project, with percentage contribution to overall progress.  
+
+### 🌐 Purpose
+The MVP is designed to demonstrate **seamless project & task tracking** with:  
+- Clear separation of frontend (UI) & backend (APIs).  
+- Real-time data storage & sync via **Supabase**.  
+- Scalable architecture for future expansion (auth, team collaboration, reporting).  
+
+
 # Contributing Guidelines
 
 Thank you for your interest in contributing to this project!  
