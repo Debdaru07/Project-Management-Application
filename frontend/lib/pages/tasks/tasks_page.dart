@@ -29,6 +29,21 @@ class _TasksPageState extends State<TasksPage> {
     super.dispose();
   }
 
+  void _updateTaskStatus(String taskId, String newStatus) {
+    final notifier = context.read<TaskNotifier>();
+    final task = notifier.tasks.firstWhere((t) => t.id == taskId);
+    final updatedTask = Task(
+      id: task.id,
+      projectId: task.projectId,
+      title: task.title,
+      description: task.description,
+      status: newStatus,
+      createdAt: task.createdAt,
+      updatedAt: DateTime.now(),
+    );
+    notifier.updateTask(updatedTask);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<ProjectNotifier, TaskNotifier>(
@@ -95,7 +110,23 @@ class _TasksPageState extends State<TasksPage> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        trailing: Text(task.status),
+                        trailing: PopupMenuButton<String>(
+                          onSelected:
+                              (value) => _updateTaskStatus(task.id, value),
+                          itemBuilder:
+                              (context) => [
+                                if (task.status != 'completed')
+                                  const PopupMenuItem(
+                                    value: 'completed',
+                                    child: Text('Mark as Completed'),
+                                  ),
+                                if (task.status != 'done')
+                                  const PopupMenuItem(
+                                    value: 'done',
+                                    child: Text('Mark as Done'),
+                                  ),
+                              ],
+                        ),
                       );
                     },
                   ),
@@ -104,9 +135,8 @@ class _TasksPageState extends State<TasksPage> {
                   padding: const EdgeInsets.only(top: 16.0),
                   child: AppButton(
                     text: 'Add Task',
-                    onPressed: () {
-                      // TODO: Implement Add Task functionality
-                    },
+                    onPressed:
+                        () => context.push('/add-task/${widget.projectId}'),
                   ),
                 ),
               ],
