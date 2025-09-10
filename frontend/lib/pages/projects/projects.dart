@@ -7,6 +7,7 @@ import '../../utils/components/app_button.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
 import '../../utils/features/project_helper.dart';
+import '../../utils/theme/app_palette.dart';
 
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
@@ -37,6 +38,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
         );
 
         return Scaffold(
+          backgroundColor: AppPalette.magnolia,
           appBar: AppBar(
             title: const Text('Projects'),
             actions: [
