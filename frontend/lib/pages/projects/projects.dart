@@ -95,27 +95,32 @@ class _ProjectsPageState extends State<ProjectsPage> {
                             itemCount: filteredProjects.length,
                             itemBuilder: (context, index) {
                               final project = filteredProjects[index];
-                              return Card(
-                                color: Theme.of(context).colorScheme.surface,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        project.title,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.titleLarge,
-                                      ),
-                                      Text(
-                                        project.description,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Text('Status: ${project.status}'),
-                                    ],
+                              return InkWell(
+                                onTap:
+                                    () => context.push('/tasks/${project.id}'),
+                                child: Card(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          project.title,
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.titleLarge,
+                                        ),
+                                        Text(
+                                          project.description,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Text('Status: ${project.status}'),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
@@ -131,6 +136,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
                             rows:
                                 filteredProjects.map((project) {
                                   return DataRow(
+                                    onSelectChanged:
+                                        (_) => context.push(
+                                          '/tasks/${project.id}',
+                                        ),
                                     cells: [
                                       DataCell(Text(project.title)),
                                       DataCell(
