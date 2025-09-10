@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'theme/app_palette.dart' as palette;
-import 'theme/app_text_styles.dart';
+import '../theme/app_palette.dart' as palette;
+import '../theme/app_text_styles.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
