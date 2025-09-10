@@ -86,7 +86,7 @@ class _AddProjectPageState extends State<AddProjectPage> {
               ),
               const SizedBox(height: 16),
               AppSearchableDropdown<String>(
-                items: ['in_progress', 'completed'],
+                items: ['in_progress'],
                 label: 'Status',
                 initialValue: 'in_progress',
                 itemAsString: (status) => status,
