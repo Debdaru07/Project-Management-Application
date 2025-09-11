@@ -9,6 +9,8 @@ import '../../utils/components/app_button.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
 import '../../utils/theme/app_palette.dart';
+import '../../utils/theme/app_palette.dart' as palette;
+import '../../utils/theme/app_text_styles.dart';
 
 class TasksPage extends StatefulWidget {
   final String projectId;
@@ -67,6 +69,19 @@ class _TasksPageState extends State<TasksPage> {
               onPressed: () => context.pop(),
             ),
             title: Text('Tasks - ${project.title}'),
+            actions: [
+              AppButton(
+                text: 'Add Task',
+                margin: const EdgeInsets.all(8),
+                backgroundColor: AppPalette.resolutionBlue,
+                borderRadius: 16,
+                textstyle: AppTextStyles.bodyLarge.copyWith(
+                  color: palette.AppPalette.magnolia,
+                ),
+                prefixIcon: Icon(Icons.add, color: AppPalette.magnolia),
+                onPressed: () => context.push('/add-task/${widget.projectId}'),
+              ),
+            ],
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -129,14 +144,6 @@ class _TasksPageState extends State<TasksPage> {
                         ),
                       );
                     },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: AppButton(
-                    text: 'Add Task',
-                    onPressed:
-                        () => context.push('/add-task/${widget.projectId}'),
                   ),
                 ),
               ],
