@@ -38,7 +38,7 @@ class AppLinearProgress extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: Text(
-              '${(value * 100).toStringAsFixed(0)}% Complete',
+              '${(value * 100).toStringAsFixed(0)}% ',
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppPalette.primarySwatch,
               ),

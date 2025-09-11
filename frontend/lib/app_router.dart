@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import 'pages/projects/add_project.dart';
 import 'pages/projects/projects.dart';
+import 'pages/task_details/task_details.dart';
 import 'pages/tasks/tasks_page.dart';
 import 'pages/tasks/upsert_task.dart';
 
@@ -24,6 +25,13 @@ class AppRouter {
         builder:
             (context, state) =>
                 AddTaskPage(projectId: state.pathParameters['projectId']!),
+      ),
+      // /task-details/${task.id}
+      GoRoute(
+        path: '/task-details/:taskId',
+        builder:
+            (context, state) =>
+                TaskDetailsPage(taskId: state.pathParameters['taskId']!),
       ),
     ],
   );

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'app_router.dart';
 import 'model/project.dart';
 import 'notifiers/project_notifier.dart';
+import 'notifiers/task_detail_notiifier.dart';
 import 'notifiers/task_notifier.dart';
 import 'utils/theme/app_palette.dart' as palette;
 import 'utils/theme/app_theme.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
           create: (_) => ProjectNotifier()..addSampleData(),
         ),
         ChangeNotifierProvider(create: (_) => TaskNotifier()..addSampleData()),
+        ChangeNotifierProvider(create: (_) => TaskDetailNotifier()),
       ],
       child: MaterialApp.router(
         title: 'Project Management Tool',
