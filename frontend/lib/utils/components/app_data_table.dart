@@ -22,11 +22,17 @@ class AppDataTable extends StatelessWidget {
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.95,
         child: DataTable(
+          showCheckboxColumn: false,
           columns:
               columns
                   .map(
                     (col) => DataColumn(
-                      label: Text(col, style: AppTextStyles.headlineMedium),
+                      label: Text(
+                        col,
+                        style: AppTextStyles.headlineMedium.copyWith(
+                          color: AppPalette.primarySwatch,
+                        ),
+                      ),
                     ),
                   )
                   .toList(),
@@ -38,10 +44,12 @@ class AppDataTable extends StatelessWidget {
                           row.values
                               .map(
                                 (value) => DataCell(
-                                  Text(
-                                    value.toString(),
-                                    style: AppTextStyles.bodyLarge,
-                                  ),
+                                  value is Widget
+                                      ? value
+                                      : Text(
+                                        value.toString(),
+                                        style: AppTextStyles.bodyLarge,
+                                      ),
                                 ),
                               )
                               .toList(),
@@ -73,10 +81,39 @@ class StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late final String label;
+    late final IconData icon;
+    late final Color color;
+
+    switch (status) {
+      case 'in_progress':
+        label = 'In Progress';
+        icon = Icons.autorenew;
+        color = Colors.blue;
+        break;
+      case 'todo':
+        label = 'Todo';
+        icon = Icons.edit_note;
+        color = Colors.grey;
+        break;
+      case 'completed':
+        label = 'Completed';
+        icon = Icons.check_circle;
+        color = Colors.green;
+        break;
+      default:
+        label = status;
+        icon = Icons.help_outline;
+        color = Colors.black54;
+    }
+
     return Chip(
-      label: Text(status, style: AppTextStyles.displaySmall),
-      backgroundColor: AppPalette.magnolia.withOpacity(0.2),
-      labelStyle: AppTextStyles.bodyMedium.copyWith(color: AppPalette.magnolia),
+      avatar: Icon(icon, color: Colors.white, size: 18),
+      label: Text(
+        label,
+        style: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
+      ),
+      backgroundColor: color.withOpacity(0.8),
     );
   }
 }

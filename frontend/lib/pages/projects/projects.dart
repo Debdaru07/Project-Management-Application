@@ -147,7 +147,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                       (project) => {
                                         'Title': project.title,
                                         'Description': project.description,
-                                        'Status': project.status,
+                                        'Status': StatusChip(
+                                          status: project.status,
+                                        ),
                                         'Created At': ProjectHelpers.formatDate(
                                           project.createdAt,
                                         ),
