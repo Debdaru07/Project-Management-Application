@@ -29,7 +29,7 @@ class AppDataTable extends StatelessWidget {
                     (col) => DataColumn(
                       label: Text(
                         col,
-                        style: AppTextStyles.headlineMedium.copyWith(
+                        style: AppTextStyles.bodyLarge.copyWith(
                           color: AppPalette.primarySwatch,
                         ),
                       ),
@@ -92,6 +92,7 @@ class StatusChip extends StatelessWidget {
         color = const Color(0xFF4F46E5); // Indigo 600
         break;
       case 'to do':
+      case 'todo':
         label = 'Todo';
         icon = Icons.edit_note;
         color = const Color(0xFF9CA3AF); // Neutral Gray 400

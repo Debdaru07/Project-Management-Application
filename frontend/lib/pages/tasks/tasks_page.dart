@@ -6,8 +6,10 @@ import '../../model/task.dart';
 import '../../notifiers/project_notifier.dart';
 import '../../notifiers/task_notifier.dart';
 import '../../utils/components/app_button.dart';
+import '../../utils/components/app_data_table.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
+import '../../utils/features/project_helper.dart';
 import '../../utils/theme/app_palette.dart';
 import '../../utils/theme/app_palette.dart' as palette;
 import '../../utils/theme/app_text_styles.dart';
@@ -55,7 +57,7 @@ class _TasksPageState extends State<TasksPage> {
           orElse: () => throw Exception('Project not found'),
         );
         final tasks = taskNotifier.getTasksForProject(widget.projectId);
-        final filteredTasks = ProjectHelpers.filterTasks(
+        final filteredTasks = TaskHelpers.filterTasks(
           tasks,
           _searchController.text,
           _selectedStatus,
@@ -119,35 +121,148 @@ class _TasksPageState extends State<TasksPage> {
                 ),
                 const SizedBox(height: 16),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: filteredTasks.length,
-                    itemBuilder: (context, index) {
-                      final task = filteredTasks[index];
-                      return ListTile(
-                        title: Text(task.title),
-                        subtitle: Text(
-                          task.description,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: PopupMenuButton<String>(
-                          onSelected:
-                              (value) => _updateTaskStatus(task.id, value),
-                          itemBuilder:
-                              (context) => [
-                                if (task.status != 'completed')
-                                  const PopupMenuItem(
-                                    value: 'completed',
-                                    child: Text('Mark as Completed'),
+                  child: AppDataTable(
+                    columns: const [
+                      'Title',
+                      'Description',
+                      'Status',
+                      'Created At',
+                      'Actions',
+                    ],
+                    rows:
+                        filteredTasks.map((task) {
+                          return {
+                            'Title': task.title,
+                            'Description': task.description,
+                            'Status': StatusChip(status: task.status),
+                            'Created At': ProjectHelpers.formatDate(
+                              project.createdAt,
+                            ),
+                            'Actions': Row(
+                              children: [
+                                // 👁 View Details Button
+                                Tooltip(
+                                  message: "View ${task.title}",
+                                  child: AppButton(
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                      horizontal: 4,
+                                    ),
+                                    backgroundColor: AppPalette.magnolia,
+                                    borderRadius: 8,
+                                    textstyle: AppTextStyles.bodyMedium
+                                        .copyWith(
+                                          color:
+                                              palette.AppPalette.resolutionBlue,
+                                        ),
+                                    padding: const EdgeInsets.only(left: 8),
+                                    prefixIcon: Icon(
+                                      Icons.remove_red_eye_outlined,
+                                      color: AppPalette.resolutionBlue,
+                                      size: 18,
+                                    ),
+                                    text: '',
+                                    onPressed:
+                                        () => context.push(
+                                          '/task-details/${task.id}',
+                                        ),
                                   ),
-                                if (task.status != 'done')
-                                  const PopupMenuItem(
-                                    value: 'done',
-                                    child: Text('Mark as Done'),
+                                ),
+                                // 📝 Mark Complete / Update Status
+                                AppButton(
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 4,
                                   ),
+                                  backgroundColor: AppPalette.magnolia,
+                                  borderRadius: 8,
+                                  textstyle: AppTextStyles.bodyMedium.copyWith(
+                                    color: palette.AppPalette.resolutionBlue,
+                                  ),
+                                  padding: const EdgeInsets.only(left: 8),
+                                  prefixIcon: Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.green,
+                                    size: 18,
+                                  ),
+                                  text: '',
+                                  onPressed:
+                                      () => _updateTaskStatus(
+                                        task.id,
+                                        'completed',
+                                      ),
+                                ),
+
+                                // 🗑 Delete Button
+                                Tooltip(
+                                  message: "Delete ${task.title}",
+                                  child: AppButton(
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                      horizontal: 4,
+                                    ),
+                                    backgroundColor: AppPalette.magnolia,
+                                    borderRadius: 8,
+                                    textstyle: AppTextStyles.bodyMedium
+                                        .copyWith(
+                                          color:
+                                              palette.AppPalette.resolutionBlue,
+                                        ),
+                                    padding: const EdgeInsets.only(left: 8),
+                                    prefixIcon: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                      size: 18,
+                                    ),
+                                    text: '',
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder:
+                                            (context) => AlertDialog(
+                                              title: const Text("Delete Task"),
+                                              content: Text(
+                                                "Are you sure you want to delete '${task.title}'?",
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed:
+                                                      () =>
+                                                          Navigator.of(
+                                                            context,
+                                                          ).pop(),
+                                                  child: const Text("Cancel"),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Provider.of<TaskNotifier>(
+                                                      context,
+                                                      listen: false,
+                                                    ).removeTask(task.id);
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text(
+                                                    "Delete",
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                      );
+                                    },
+                                  ),
+                                ),
                               ],
-                        ),
+                            ),
+                          };
+                        }).toList(),
+                    onRowTap: (row) {
+                      final tappedTask = filteredTasks.firstWhere(
+                        (t) => t.title == row['Title'],
                       );
+                      context.push('/task-details/${tappedTask.id}');
                     },
                   ),
                 ),
@@ -160,7 +275,7 @@ class _TasksPageState extends State<TasksPage> {
   }
 }
 
-class ProjectHelpers {
+class TaskHelpers {
   static List<Task> filterTasks(
     List<Task> tasks,
     String searchQuery,
