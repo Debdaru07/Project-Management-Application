@@ -322,7 +322,54 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                                 size: 18,
                                               ),
                                               text: '',
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (context) => AlertDialog(
+                                                        title: const Text(
+                                                          "Delete Project",
+                                                        ),
+                                                        content: Text(
+                                                          "Are you sure you want to delete '${project.title}'?",
+                                                        ),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed:
+                                                                () =>
+                                                                    Navigator.of(
+                                                                      context,
+                                                                    ).pop(),
+                                                            child: const Text(
+                                                              "Cancel",
+                                                            ),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Provider.of<
+                                                                ProjectNotifier
+                                                              >(
+                                                                context,
+                                                                listen: false,
+                                                              ).removeProject(
+                                                                project.id,
+                                                              );
+                                                              Navigator.of(
+                                                                context,
+                                                              ).pop();
+                                                            },
+                                                            child: const Text(
+                                                              "Delete",
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
