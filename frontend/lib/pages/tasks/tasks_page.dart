@@ -7,6 +7,7 @@ import '../../notifiers/project_notifier.dart';
 import '../../notifiers/task_notifier.dart';
 import '../../utils/components/app_button.dart';
 import '../../utils/components/app_data_table.dart';
+import '../../utils/components/app_linear_progress_indicator.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
 import '../../utils/features/project_helper.dart';
@@ -134,6 +135,7 @@ class _TasksPageState extends State<TasksPage> {
                         'Title',
                         'Description',
                         'Status',
+                        'Progress',
                         'Created At',
                         'Actions',
                       ],
@@ -143,6 +145,9 @@ class _TasksPageState extends State<TasksPage> {
                               'Title': task.title,
                               'Description': task.description,
                               'Status': StatusChip(status: task.status),
+                              'Progress': AppLinearProgress(
+                                value: 0.65, // 65% progress
+                              ),
                               'Created At': ProjectHelpers.formatDate(
                                 project.createdAt,
                               ),

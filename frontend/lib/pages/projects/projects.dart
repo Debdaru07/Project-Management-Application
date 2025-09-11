@@ -8,6 +8,7 @@ import '../../model/project.dart';
 import '../../notifiers/project_notifier.dart';
 import '../../utils/components/app_button.dart';
 import '../../utils/components/app_data_table.dart';
+import '../../utils/components/app_linear_progress_indicator.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
 import '../../utils/features/project_helper.dart';
@@ -254,6 +255,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                 'Title',
                                 'Description',
                                 'Status',
+                                'Progress',
                                 'Created At',
                                 'Actions',
                               ],
@@ -265,6 +267,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                           'Description': project.description,
                                           'Status': StatusChip(
                                             status: project.status,
+                                          ),
+                                          'Progress': AppLinearProgress(
+                                            value: 0.65, // 65% progress
                                           ),
                                           'Created At':
                                               ProjectHelpers.formatDate(
