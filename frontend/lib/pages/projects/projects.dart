@@ -73,8 +73,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
               const SizedBox(width: 12),
             ],
           ),
-          body: Padding(
+          body: Container(
             padding: const EdgeInsets.all(16.0),
+            margin: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Column(
               children: [
                 Row(

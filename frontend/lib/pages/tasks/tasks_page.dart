@@ -90,7 +90,8 @@ class _TasksPageState extends State<TasksPage> {
               const SizedBox(width: 12),
             ],
           ),
-          body: Padding(
+          body: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 24.0),
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [

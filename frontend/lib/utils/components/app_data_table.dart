@@ -20,7 +20,7 @@ class AppDataTable extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.95,
+        width: MediaQuery.of(context).size.width * 0.945,
         child: DataTable(
           showCheckboxColumn: false,
           columns:
