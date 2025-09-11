@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_text_styles.dart';
 
-class CustomDataTable extends StatelessWidget {
+class AppDataTable extends StatelessWidget {
   final List<String> columns;
   final List<Map<String, dynamic>> rows;
   final Function(Map<String, dynamic>)? onRowTap;
 
-  const CustomDataTable({
+  const AppDataTable({
     super.key,
     required this.columns,
     required this.rows,
@@ -19,42 +19,47 @@ class CustomDataTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: DataTable(
-        columns:
-            columns
-                .map(
-                  (col) => DataColumn(
-                    label: Text(col, style: AppTextStyles.headlineMedium),
-                  ),
-                )
-                .toList(),
-        rows:
-            rows
-                .map(
-                  (row) => DataRow(
-                    cells:
-                        row.values
-                            .map(
-                              (value) => DataCell(
-                                Text(
-                                  value.toString(),
-                                  style: AppTextStyles.bodyLarge,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.95,
+        child: DataTable(
+          columns:
+              columns
+                  .map(
+                    (col) => DataColumn(
+                      label: Text(col, style: AppTextStyles.headlineMedium),
+                    ),
+                  )
+                  .toList(),
+          rows:
+              rows
+                  .map(
+                    (row) => DataRow(
+                      cells:
+                          row.values
+                              .map(
+                                (value) => DataCell(
+                                  Text(
+                                    value.toString(),
+                                    style: AppTextStyles.bodyLarge,
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                    onSelectChanged:
-                        onRowTap != null ? (selected) => onRowTap!(row) : null,
-                  ),
-                )
-                .toList(),
-        headingRowColor: WidgetStatePropertyAll(
-          AppPalette.magnolia.withOpacity(0.1),
-        ),
-        dataRowColor: WidgetStatePropertyAll(Colors.white),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppPalette.raisinBlack.withOpacity(0.2)),
-          borderRadius: BorderRadius.circular(4),
+                              )
+                              .toList(),
+                      onSelectChanged:
+                          onRowTap != null
+                              ? (selected) => onRowTap!(row)
+                              : null,
+                    ),
+                  )
+                  .toList(),
+          headingRowColor: WidgetStatePropertyAll(
+            AppPalette.magnolia.withOpacity(0.1),
+          ),
+          dataRowColor: WidgetStatePropertyAll(Colors.white),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppPalette.raisinBlack.withOpacity(0.2)),
+            borderRadius: BorderRadius.circular(4),
+          ),
         ),
       ),
     );

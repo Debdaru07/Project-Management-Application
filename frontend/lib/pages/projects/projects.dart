@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../model/project.dart';
 import '../../notifiers/project_notifier.dart';
 import '../../utils/components/app_button.dart';
+import '../../utils/components/app_data_table.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
 import '../../utils/features/project_helper.dart';
@@ -133,40 +134,30 @@ class _ProjectsPageState extends State<ProjectsPage> {
                               );
                             },
                           )
-                          : DataTable(
+                          : AppDataTable(
                             columns: const [
-                              DataColumn(label: Text('Title')),
-                              DataColumn(label: Text('Description')),
-                              DataColumn(label: Text('Status')),
-                              DataColumn(label: Text('Created At')),
+                              'Title',
+                              'Description',
+                              'Status',
+                              'Created At',
                             ],
                             rows:
-                                filteredProjects.map((project) {
-                                  return DataRow(
-                                    onSelectChanged:
-                                        (_) => context.push(
-                                          '/tasks/${project.id}',
+                                filteredProjects
+                                    .map(
+                                      (project) => {
+                                        'Title': project.title,
+                                        'Description': project.description,
+                                        'Status': project.status,
+                                        'Created At': ProjectHelpers.formatDate(
+                                          project.createdAt,
                                         ),
-                                    cells: [
-                                      DataCell(Text(project.title)),
-                                      DataCell(
-                                        Text(
-                                          project.description,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      DataCell(Text(project.status)),
-                                      DataCell(
-                                        Text(
-                                          ProjectHelpers.formatDate(
-                                            project.createdAt,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }).toList(),
+                                      },
+                                    )
+                                    .toList(),
+                            onRowTap:
+                                (row) => context.push(
+                                  '/tasks/${filteredProjects[filteredProjects.indexWhere((p) => p.title == row['Title'])].id}',
+                                ),
                           ),
                 ),
               ],
