@@ -247,155 +247,163 @@ class _ProjectsPageState extends State<ProjectsPage> {
                               );
                             },
                           )
-                          : AppDataTable(
-                            columns: const [
-                              'Title',
-                              'Description',
-                              'Status',
-                              'Created At',
-                              'Actions',
-                            ],
-                            rows:
-                                filteredProjects
-                                    .map(
-                                      (project) => {
-                                        'Title': project.title,
-                                        'Description': project.description,
-                                        'Status': StatusChip(
-                                          status: project.status,
-                                        ),
-                                        'Created At': ProjectHelpers.formatDate(
-                                          project.createdAt,
-                                        ),
-                                        '': Row(
-                                          children: [
-                                            Tooltip(
-                                              message:
-                                                  "View Tasks of ${project.title}",
-                                              child: AppButton(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                      vertical: 8,
-                                                      horizontal: 4,
-                                                    ),
-                                                backgroundColor:
-                                                    AppPalette.magnolia,
-                                                borderRadius: 8,
-                                                textstyle: AppTextStyles
-                                                    .bodyMedium
-                                                    .copyWith(
-                                                      color:
-                                                          palette
-                                                              .AppPalette
-                                                              .resolutionBlue,
-                                                    ),
-                                                padding: EdgeInsets.only(
-                                                  left: 8,
-                                                ),
-                                                prefixIcon: Icon(
-                                                  Icons.remove_red_eye_outlined,
-                                                  color:
-                                                      AppPalette.resolutionBlue,
-                                                  size: 18,
-                                                ),
-                                                text: '',
-                                                onPressed:
-                                                    () => context.push(
-                                                      '/tasks/${project.id}',
-                                                    ),
+                          : SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.96,
+                            child: AppDataTable(
+                              columns: const [
+                                'Title',
+                                'Description',
+                                'Status',
+                                'Created At',
+                                'Actions',
+                              ],
+                              rows:
+                                  filteredProjects
+                                      .map(
+                                        (project) => {
+                                          'Title': project.title,
+                                          'Description': project.description,
+                                          'Status': StatusChip(
+                                            status: project.status,
+                                          ),
+                                          'Created At':
+                                              ProjectHelpers.formatDate(
+                                                project.createdAt,
                                               ),
-                                            ),
-                                            Tooltip(
-                                              message:
-                                                  "Remove ${project.title}",
-                                              child: AppButton(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                      vertical: 8,
-                                                      horizontal: 4,
-                                                    ),
-                                                backgroundColor:
-                                                    AppPalette.magnolia,
-                                                padding: EdgeInsets.only(
-                                                  left: 8,
+                                          '': Row(
+                                            children: [
+                                              Tooltip(
+                                                message:
+                                                    "View Tasks of ${project.title}",
+                                                child: AppButton(
+                                                  margin:
+                                                      const EdgeInsets.symmetric(
+                                                        vertical: 8,
+                                                        horizontal: 4,
+                                                      ),
+                                                  backgroundColor:
+                                                      AppPalette.magnolia,
+                                                  borderRadius: 8,
+                                                  textstyle: AppTextStyles
+                                                      .bodyMedium
+                                                      .copyWith(
+                                                        color:
+                                                            palette
+                                                                .AppPalette
+                                                                .resolutionBlue,
+                                                      ),
+                                                  padding: EdgeInsets.only(
+                                                    left: 8,
+                                                  ),
+                                                  prefixIcon: Icon(
+                                                    Icons
+                                                        .remove_red_eye_outlined,
+                                                    color:
+                                                        AppPalette
+                                                            .resolutionBlue,
+                                                    size: 18,
+                                                  ),
+                                                  text: '',
+                                                  onPressed:
+                                                      () => context.push(
+                                                        '/tasks/${project.id}',
+                                                      ),
                                                 ),
-                                                borderRadius: 8,
-                                                textstyle: AppTextStyles
-                                                    .bodyMedium
-                                                    .copyWith(
-                                                      color:
-                                                          palette
-                                                              .AppPalette
-                                                              .resolutionBlue,
-                                                    ),
-                                                prefixIcon: Icon(
-                                                  Icons.delete,
-                                                  color: Colors.red,
-                                                  size: 18,
-                                                ),
-                                                text: '',
-                                                onPressed: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (
-                                                          context,
-                                                        ) => AlertDialog(
-                                                          title: const Text(
-                                                            "Delete Project",
-                                                          ),
-                                                          content: Text(
-                                                            "Are you sure you want to delete '${project.title}'?",
-                                                          ),
-                                                          actions: [
-                                                            TextButton(
-                                                              onPressed:
-                                                                  () =>
-                                                                      Navigator.of(
-                                                                        context,
-                                                                      ).pop(),
-                                                              child: const Text(
-                                                                "Cancel",
-                                                              ),
+                                              ),
+                                              Tooltip(
+                                                message:
+                                                    "Remove ${project.title}",
+                                                child: AppButton(
+                                                  margin:
+                                                      const EdgeInsets.symmetric(
+                                                        vertical: 8,
+                                                        horizontal: 4,
+                                                      ),
+                                                  backgroundColor:
+                                                      AppPalette.magnolia,
+                                                  padding: EdgeInsets.only(
+                                                    left: 8,
+                                                  ),
+                                                  borderRadius: 8,
+                                                  textstyle: AppTextStyles
+                                                      .bodyMedium
+                                                      .copyWith(
+                                                        color:
+                                                            palette
+                                                                .AppPalette
+                                                                .resolutionBlue,
+                                                      ),
+                                                  prefixIcon: Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                    size: 18,
+                                                  ),
+                                                  text: '',
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder:
+                                                          (
+                                                            context,
+                                                          ) => AlertDialog(
+                                                            title: const Text(
+                                                              "Delete Project",
                                                             ),
-                                                            TextButton(
-                                                              onPressed: () {
-                                                                Provider.of<
-                                                                  ProjectNotifier
-                                                                >(
-                                                                  context,
-                                                                  listen: false,
-                                                                ).removeProject(
-                                                                  project.id,
-                                                                );
-                                                                Navigator.of(
-                                                                  context,
-                                                                ).pop();
-                                                              },
-                                                              child: const Text(
-                                                                "Delete",
-                                                                style: TextStyle(
-                                                                  color:
-                                                                      Colors
-                                                                          .red,
+                                                            content: Text(
+                                                              "Are you sure you want to delete '${project.title}'?",
+                                                            ),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed:
+                                                                    () =>
+                                                                        Navigator.of(
+                                                                          context,
+                                                                        ).pop(),
+                                                                child:
+                                                                    const Text(
+                                                                      "Cancel",
+                                                                    ),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Provider.of<
+                                                                    ProjectNotifier
+                                                                  >(
+                                                                    context,
+                                                                    listen:
+                                                                        false,
+                                                                  ).removeProject(
+                                                                    project.id,
+                                                                  );
+                                                                  Navigator.of(
+                                                                    context,
+                                                                  ).pop();
+                                                                },
+                                                                child: const Text(
+                                                                  "Delete",
+                                                                  style: TextStyle(
+                                                                    color:
+                                                                        Colors
+                                                                            .red,
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                  );
-                                                },
+                                                            ],
+                                                          ),
+                                                    );
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      },
-                                    )
-                                    .toList(),
-                            onRowTap:
-                                (row) => context.push(
-                                  '/tasks/${filteredProjects[filteredProjects.indexWhere((p) => p.title == row['Title'])].id}',
-                                ),
+                                            ],
+                                          ),
+                                        },
+                                      )
+                                      .toList(),
+                              onRowTap:
+                                  (row) => context.push(
+                                    '/tasks/${filteredProjects[filteredProjects.indexWhere((p) => p.title == row['Title'])].id}',
+                                  ),
+                            ),
                           ),
                 ),
               ],

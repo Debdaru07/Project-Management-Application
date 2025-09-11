@@ -70,7 +70,12 @@ class _TasksPageState extends State<TasksPage> {
               icon: const Icon(Icons.arrow_back),
               onPressed: () => context.pop(),
             ),
-            title: Text('Tasks - ${project.title}'),
+            title: Text(
+              project.title,
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: palette.AppPalette.raisinBlack,
+              ),
+            ),
             actions: [
               AppButton(
                 text: 'Add Task',
@@ -87,11 +92,11 @@ class _TasksPageState extends State<TasksPage> {
                 ),
                 onPressed: () => context.push('/add-task/${widget.projectId}'),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 24),
             ],
           ),
           body: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24.0),
+            margin: const EdgeInsets.symmetric(horizontal: 12.0),
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
@@ -122,29 +127,59 @@ class _TasksPageState extends State<TasksPage> {
                 ),
                 const SizedBox(height: 16),
                 Expanded(
-                  child: AppDataTable(
-                    columns: const [
-                      'Title',
-                      'Description',
-                      'Status',
-                      'Created At',
-                      'Actions',
-                    ],
-                    rows:
-                        filteredTasks.map((task) {
-                          return {
-                            'Title': task.title,
-                            'Description': task.description,
-                            'Status': StatusChip(status: task.status),
-                            'Created At': ProjectHelpers.formatDate(
-                              project.createdAt,
-                            ),
-                            'Actions': Row(
-                              children: [
-                                // 👁 View Details Button
-                                Tooltip(
-                                  message: "View ${task.title}",
-                                  child: AppButton(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.96,
+                    child: AppDataTable(
+                      columns: const [
+                        'Title',
+                        'Description',
+                        'Status',
+                        'Created At',
+                        'Actions',
+                      ],
+                      rows:
+                          filteredTasks.map((task) {
+                            return {
+                              'Title': task.title,
+                              'Description': task.description,
+                              'Status': StatusChip(status: task.status),
+                              'Created At': ProjectHelpers.formatDate(
+                                project.createdAt,
+                              ),
+                              'Actions': Row(
+                                children: [
+                                  // 👁 View Details Button
+                                  Tooltip(
+                                    message: "View ${task.title}",
+                                    child: AppButton(
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 8,
+                                        horizontal: 4,
+                                      ),
+                                      backgroundColor: AppPalette.magnolia,
+                                      borderRadius: 8,
+                                      textstyle: AppTextStyles.bodyMedium
+                                          .copyWith(
+                                            color:
+                                                palette
+                                                    .AppPalette
+                                                    .resolutionBlue,
+                                          ),
+                                      padding: const EdgeInsets.only(left: 8),
+                                      prefixIcon: Icon(
+                                        Icons.remove_red_eye_outlined,
+                                        color: AppPalette.resolutionBlue,
+                                        size: 18,
+                                      ),
+                                      text: '',
+                                      onPressed:
+                                          () => context.push(
+                                            '/task-details/${task.id}',
+                                          ),
+                                    ),
+                                  ),
+                                  // 📝 Mark Complete / Update Status
+                                  AppButton(
                                     margin: const EdgeInsets.symmetric(
                                       vertical: 8,
                                       horizontal: 4,
@@ -158,113 +193,96 @@ class _TasksPageState extends State<TasksPage> {
                                         ),
                                     padding: const EdgeInsets.only(left: 8),
                                     prefixIcon: Icon(
-                                      Icons.remove_red_eye_outlined,
-                                      color: AppPalette.resolutionBlue,
+                                      Icons.check_circle_outline,
+                                      color: Colors.green,
                                       size: 18,
                                     ),
                                     text: '',
                                     onPressed:
-                                        () => context.push(
-                                          '/task-details/${task.id}',
+                                        () => _updateTaskStatus(
+                                          task.id,
+                                          'completed',
                                         ),
                                   ),
-                                ),
-                                // 📝 Mark Complete / Update Status
-                                AppButton(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                    horizontal: 4,
-                                  ),
-                                  backgroundColor: AppPalette.magnolia,
-                                  borderRadius: 8,
-                                  textstyle: AppTextStyles.bodyMedium.copyWith(
-                                    color: palette.AppPalette.resolutionBlue,
-                                  ),
-                                  padding: const EdgeInsets.only(left: 8),
-                                  prefixIcon: Icon(
-                                    Icons.check_circle_outline,
-                                    color: Colors.green,
-                                    size: 18,
-                                  ),
-                                  text: '',
-                                  onPressed:
-                                      () => _updateTaskStatus(
-                                        task.id,
-                                        'completed',
-                                      ),
-                                ),
 
-                                // 🗑 Delete Button
-                                Tooltip(
-                                  message: "Delete ${task.title}",
-                                  child: AppButton(
-                                    margin: const EdgeInsets.symmetric(
-                                      vertical: 8,
-                                      horizontal: 4,
-                                    ),
-                                    backgroundColor: AppPalette.magnolia,
-                                    borderRadius: 8,
-                                    textstyle: AppTextStyles.bodyMedium
-                                        .copyWith(
-                                          color:
-                                              palette.AppPalette.resolutionBlue,
-                                        ),
-                                    padding: const EdgeInsets.only(left: 8),
-                                    prefixIcon: Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                      size: 18,
-                                    ),
-                                    text: '',
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder:
-                                            (context) => AlertDialog(
-                                              title: const Text("Delete Task"),
-                                              content: Text(
-                                                "Are you sure you want to delete '${task.title}'?",
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed:
-                                                      () =>
-                                                          Navigator.of(
-                                                            context,
-                                                          ).pop(),
-                                                  child: const Text("Cancel"),
+                                  // 🗑 Delete Button
+                                  Tooltip(
+                                    message: "Delete ${task.title}",
+                                    child: AppButton(
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 8,
+                                        horizontal: 4,
+                                      ),
+                                      backgroundColor: AppPalette.magnolia,
+                                      borderRadius: 8,
+                                      textstyle: AppTextStyles.bodyMedium
+                                          .copyWith(
+                                            color:
+                                                palette
+                                                    .AppPalette
+                                                    .resolutionBlue,
+                                          ),
+                                      padding: const EdgeInsets.only(left: 8),
+                                      prefixIcon: Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                        size: 18,
+                                      ),
+                                      text: '',
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder:
+                                              (context) => AlertDialog(
+                                                title: const Text(
+                                                  "Delete Task",
                                                 ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Provider.of<TaskNotifier>(
-                                                      context,
-                                                      listen: false,
-                                                    ).removeTask(task.id);
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text(
-                                                    "Delete",
-                                                    style: TextStyle(
-                                                      color: Colors.red,
+                                                content: Text(
+                                                  "Are you sure you want to delete '${task.title}'?",
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed:
+                                                        () =>
+                                                            Navigator.of(
+                                                              context,
+                                                            ).pop(),
+                                                    child: const Text("Cancel"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Provider.of<TaskNotifier>(
+                                                        context,
+                                                        listen: false,
+                                                      ).removeTask(task.id);
+                                                      Navigator.of(
+                                                        context,
+                                                      ).pop();
+                                                    },
+                                                    child: const Text(
+                                                      "Delete",
+                                                      style: TextStyle(
+                                                        color: Colors.red,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                      );
-                                    },
+                                                ],
+                                              ),
+                                        );
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          };
-                        }).toList(),
-                    onRowTap: (row) {
-                      final tappedTask = filteredTasks.firstWhere(
-                        (t) => t.title == row['Title'],
-                      );
-                      context.push('/task-details/${tappedTask.id}');
-                    },
+                                ],
+                              ),
+                            };
+                          }).toList(),
+                      onRowTap: (row) {
+                        final tappedTask = filteredTasks.firstWhere(
+                          (t) => t.title == row['Title'],
+                        );
+                        context.push('/task-details/${tappedTask.id}');
+                      },
+                    ),
                   ),
                 ),
               ],

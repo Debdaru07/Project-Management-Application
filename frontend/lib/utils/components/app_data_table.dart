@@ -17,58 +17,50 @@ class AppDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.945,
-        child: DataTable(
-          showCheckboxColumn: false,
-          columns:
-              columns
-                  .map(
-                    (col) => DataColumn(
-                      label: Text(
-                        col,
-                        style: AppTextStyles.bodyLarge.copyWith(
-                          color: AppPalette.primarySwatch,
-                        ),
-                      ),
+    return DataTable(
+      showCheckboxColumn: false,
+      columns:
+          columns
+              .map(
+                (col) => DataColumn(
+                  label: Text(
+                    col,
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppPalette.primarySwatch,
                     ),
-                  )
-                  .toList(),
-          rows:
-              rows
-                  .map(
-                    (row) => DataRow(
-                      cells:
-                          row.values
-                              .map(
-                                (value) => DataCell(
-                                  value is Widget
-                                      ? value
-                                      : Text(
-                                        value.toString(),
-                                        style: AppTextStyles.bodyLarge,
-                                      ),
-                                ),
-                              )
-                              .toList(),
-                      onSelectChanged:
-                          onRowTap != null
-                              ? (selected) => onRowTap!(row)
-                              : null,
-                    ),
-                  )
-                  .toList(),
-          headingRowColor: WidgetStatePropertyAll(
-            AppPalette.magnolia.withOpacity(0.1),
-          ),
-          dataRowColor: WidgetStatePropertyAll(Colors.white),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppPalette.raisinBlack.withOpacity(0.2)),
-            borderRadius: BorderRadius.circular(4),
-          ),
-        ),
+                  ),
+                ),
+              )
+              .toList(),
+      rows:
+          rows
+              .map(
+                (row) => DataRow(
+                  cells:
+                      row.values
+                          .map(
+                            (value) => DataCell(
+                              value is Widget
+                                  ? value
+                                  : Text(
+                                    value.toString(),
+                                    style: AppTextStyles.bodyLarge,
+                                  ),
+                            ),
+                          )
+                          .toList(),
+                  onSelectChanged:
+                      onRowTap != null ? (selected) => onRowTap!(row) : null,
+                ),
+              )
+              .toList(),
+      headingRowColor: WidgetStatePropertyAll(
+        AppPalette.magnolia.withOpacity(0.1),
+      ),
+      dataRowColor: WidgetStatePropertyAll(Colors.white),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppPalette.raisinBlack.withOpacity(0.2)),
+        borderRadius: BorderRadius.circular(4),
       ),
     );
   }
