@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../model/project.dart';
 import '../../notifiers/project_notifier.dart';
@@ -46,10 +47,9 @@ class _AddProjectPageState extends State<AddProjectPage> {
   void _submitForm() {
     if (_isFormValid) {
       final notifier = context.read<ProjectNotifier>();
+      var uuid = Uuid();
       final newProject = Project(
-        id:
-            UniqueKey()
-                .toString(), // Simple ID generation; replace with UUID if needed
+        id: uuid.v4(), // Simple ID generation; replace with UUID if needed
         title: _titleController.text,
         description: _descriptionController.text,
         status: _status,

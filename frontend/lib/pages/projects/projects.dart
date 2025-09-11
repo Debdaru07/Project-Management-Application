@@ -1,7 +1,10 @@
+import 'dart:developer' as console;
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/project.dart';
 import '../../notifiers/project_notifier.dart';
 import '../../utils/components/app_button.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
@@ -36,7 +39,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
           _searchController.text,
           _selectedStatus,
         );
-
+        for (Project item in filteredProjects) {
+          console.log('Filtered Projects: ${item.toJson()}');
+        }
         return Scaffold(
           backgroundColor: AppPalette.magnolia,
           appBar: AppBar(
