@@ -12,6 +12,8 @@ import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
 import '../../utils/features/project_helper.dart';
 import '../../utils/theme/app_palette.dart';
+import '../../utils/theme/app_palette.dart' as palette;
+import '../../utils/theme/app_text_styles.dart';
 
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
@@ -49,11 +51,23 @@ class _ProjectsPageState extends State<ProjectsPage> {
             title: const Text('Projects'),
             actions: [
               AppButton(
+                margin: const EdgeInsets.all(8),
+                backgroundColor: AppPalette.magnolia,
+                borderRadius: 16,
+                textstyle: AppTextStyles.bodyLarge.copyWith(
+                  color: palette.AppPalette.raisinBlack,
+                ),
                 text: _isGridView ? 'Switch to Table' : 'Switch to Grid',
                 onPressed: () => setState(() => _isGridView = !_isGridView),
               ),
               const SizedBox(width: 10),
               AppButton(
+                margin: const EdgeInsets.all(8),
+                backgroundColor: AppPalette.magnolia,
+                borderRadius: 16,
+                textstyle: AppTextStyles.bodyLarge.copyWith(
+                  color: palette.AppPalette.raisinBlack,
+                ),
                 text: 'Add Project',
                 onPressed: () => context.push('/add-project'),
               ),
@@ -140,6 +154,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                               'Description',
                               'Status',
                               'Created At',
+                              'Actions',
                             ],
                             rows:
                                 filteredProjects
@@ -152,6 +167,28 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                         ),
                                         'Created At': ProjectHelpers.formatDate(
                                           project.createdAt,
+                                        ),
+                                        '': AppButton(
+                                          margin: const EdgeInsets.all(8),
+                                          backgroundColor: AppPalette.magnolia,
+                                          borderRadius: 16,
+                                          text: 'View Tasks',
+                                          prefixIcon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            size: 18,
+                                            color: AppPalette.primarySwatch,
+                                          ),
+                                          textstyle: AppTextStyles.bodyLarge
+                                              .copyWith(
+                                                color:
+                                                    palette
+                                                        .AppPalette
+                                                        .raisinBlack,
+                                              ),
+                                          onPressed:
+                                              () => context.push(
+                                                '/tasks/${project.id}',
+                                              ),
                                         ),
                                       },
                                     )

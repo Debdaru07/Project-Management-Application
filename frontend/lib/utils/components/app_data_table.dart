@@ -91,7 +91,7 @@ class StatusChip extends StatelessWidget {
         icon = Icons.autorenew;
         color = Colors.blue;
         break;
-      case 'todo':
+      case 'to do':
         label = 'Todo';
         icon = Icons.edit_note;
         color = Colors.grey;
@@ -108,12 +108,13 @@ class StatusChip extends StatelessWidget {
     }
 
     return Chip(
-      avatar: Icon(icon, color: Colors.white, size: 18),
+      avatar: Icon(icon, color: color, size: 18),
       label: Text(
         label,
-        style: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
+        style: AppTextStyles.bodyMedium.copyWith(color: color),
       ),
-      backgroundColor: color.withOpacity(0.8),
+      backgroundColor: AppPalette.magnolia,
+      shape: StadiumBorder(side: BorderSide(color: color, width: 0.5)),
     );
   }
 }
