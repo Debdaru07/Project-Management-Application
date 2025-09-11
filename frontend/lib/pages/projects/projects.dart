@@ -117,30 +117,128 @@ class _ProjectsPageState extends State<ProjectsPage> {
                             itemCount: filteredProjects.length,
                             itemBuilder: (context, index) {
                               final project = filteredProjects[index];
+
+                              // status badge values
+                              String label;
+                              IconData icon;
+                              Color color;
+                              switch (project.status) {
+                                case 'in_progress':
+                                  label = 'In Progress';
+                                  icon = Icons.autorenew;
+                                  color = const Color(0xFF4F46E5); // Indigo 600
+                                  break;
+                                case 'to do':
+                                  label = 'Todo';
+                                  icon = Icons.edit_note;
+                                  color = const Color(
+                                    0xFF9CA3AF,
+                                  ); // Neutral Gray 400
+                                  break;
+                                case 'completed':
+                                  label = 'Completed';
+                                  icon = Icons.check_circle;
+                                  color = const Color(
+                                    0xFF10B981,
+                                  ); // Emerald 500
+                                  break;
+                                default:
+                                  label = project.status;
+                                  icon = Icons.help_outline;
+                                  color = const Color(0xFF374151); // Gray 700
+                              }
+
                               return InkWell(
                                 onTap:
                                     () => context.push('/tasks/${project.id}'),
                                 child: Card(
                                   color: Theme.of(context).colorScheme.surface,
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(12.0),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
+                                        // Project title
                                         Text(
                                           project.title,
-                                          style:
-                                              Theme.of(
-                                                context,
-                                              ).textTheme.titleLarge,
-                                        ),
-                                        Text(
-                                          project.description,
-                                          maxLines: 2,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.titleMedium?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
-                                        Text('Status: ${project.status}'),
+
+                                        const SizedBox(height: 4),
+
+                                        // Created at
+                                        Text(
+                                          "Created: ${project.createdAt}", // ensure createdAt is String or format DateTime
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall?.copyWith(
+                                            color: Theme.of(context).hintColor,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+
+                                        const SizedBox(height: 8),
+
+                                        // Description
+                                        Expanded(
+                                          child: Text(
+                                            project.description,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodyMedium?.copyWith(
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                            ),
+                                          ),
+                                        ),
+
+                                        const SizedBox(height: 8),
+
+                                        // Status badge
+                                        Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: Chip(
+                                            avatar: Icon(
+                                              icon,
+                                              color: color,
+                                              size: 16,
+                                            ),
+                                            label: Text(
+                                              label,
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall?.copyWith(
+                                                color: color,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            backgroundColor: color.withOpacity(
+                                              0.1,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              side: BorderSide(
+                                                color: color.withOpacity(0.3),
+                                                width: 0.5,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -168,27 +266,65 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                         'Created At': ProjectHelpers.formatDate(
                                           project.createdAt,
                                         ),
-                                        '': AppButton(
-                                          margin: const EdgeInsets.all(8),
-                                          backgroundColor: AppPalette.magnolia,
-                                          borderRadius: 16,
-                                          textstyle: AppTextStyles.bodyMedium
-                                              .copyWith(
+                                        '': Row(
+                                          children: [
+                                            AppButton(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 4,
+                                                  ),
+                                              backgroundColor:
+                                                  AppPalette.magnolia,
+                                              borderRadius: 8,
+                                              textstyle: AppTextStyles
+                                                  .bodyMedium
+                                                  .copyWith(
+                                                    color:
+                                                        palette
+                                                            .AppPalette
+                                                            .resolutionBlue,
+                                                  ),
+                                              padding: EdgeInsets.only(left: 8),
+                                              prefixIcon: Icon(
+                                                Icons.remove_red_eye_outlined,
                                                 color:
-                                                    palette
-                                                        .AppPalette
-                                                        .resolutionBlue,
+                                                    AppPalette.resolutionBlue,
+                                                size: 18,
                                               ),
-                                          prefixIcon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            color: AppPalette.resolutionBlue,
-                                            size: 18,
-                                          ),
-                                          text: 'View Tasks',
-                                          onPressed:
-                                              () => context.push(
-                                                '/tasks/${project.id}',
+                                              text: '',
+                                              onPressed:
+                                                  () => context.push(
+                                                    '/tasks/${project.id}',
+                                                  ),
+                                            ),
+                                            AppButton(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 4,
+                                                  ),
+                                              backgroundColor:
+                                                  AppPalette.magnolia,
+                                              padding: EdgeInsets.only(left: 8),
+                                              borderRadius: 8,
+                                              textstyle: AppTextStyles
+                                                  .bodyMedium
+                                                  .copyWith(
+                                                    color:
+                                                        palette
+                                                            .AppPalette
+                                                            .resolutionBlue,
+                                                  ),
+                                              prefixIcon: Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                                size: 18,
                                               ),
+                                              text: '',
+                                              onPressed: () {},
+                                            ),
+                                          ],
                                         ),
                                       },
                                     )
