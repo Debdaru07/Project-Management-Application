@@ -54,23 +54,23 @@ class _ProjectsPageState extends State<ProjectsPage> {
                 margin: const EdgeInsets.all(8),
                 backgroundColor: AppPalette.magnolia,
                 borderRadius: 16,
-                textstyle: AppTextStyles.bodyLarge.copyWith(
-                  color: palette.AppPalette.raisinBlack,
+                textstyle: AppTextStyles.bodyMedium.copyWith(
+                  color: palette.AppPalette.resolutionBlue,
                 ),
                 text: _isGridView ? 'Switch to Table' : 'Switch to Grid',
                 onPressed: () => setState(() => _isGridView = !_isGridView),
               ),
-              const SizedBox(width: 10),
               AppButton(
                 margin: const EdgeInsets.all(8),
                 backgroundColor: AppPalette.magnolia,
                 borderRadius: 16,
-                textstyle: AppTextStyles.bodyLarge.copyWith(
-                  color: palette.AppPalette.raisinBlack,
+                textstyle: AppTextStyles.bodyMedium.copyWith(
+                  color: palette.AppPalette.resolutionBlue,
                 ),
                 text: 'Add Project',
                 onPressed: () => context.push('/add-project'),
               ),
+              const SizedBox(width: 12),
             ],
           ),
           body: Padding(
@@ -172,19 +172,19 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                           margin: const EdgeInsets.all(8),
                                           backgroundColor: AppPalette.magnolia,
                                           borderRadius: 16,
-                                          text: 'View Tasks',
-                                          prefixIcon: Icon(
-                                            Icons.remove_red_eye_outlined,
-                                            size: 18,
-                                            color: AppPalette.primarySwatch,
-                                          ),
-                                          textstyle: AppTextStyles.bodyLarge
+                                          textstyle: AppTextStyles.bodyMedium
                                               .copyWith(
                                                 color:
                                                     palette
                                                         .AppPalette
-                                                        .raisinBlack,
+                                                        .resolutionBlue,
                                               ),
+                                          prefixIcon: Icon(
+                                            Icons.remove_red_eye_outlined,
+                                            color: AppPalette.resolutionBlue,
+                                            size: 18,
+                                          ),
+                                          text: 'View Tasks',
                                           onPressed:
                                               () => context.push(
                                                 '/tasks/${project.id}',

@@ -89,32 +89,32 @@ class StatusChip extends StatelessWidget {
       case 'in_progress':
         label = 'In Progress';
         icon = Icons.autorenew;
-        color = Colors.blue;
+        color = const Color(0xFF4F46E5); // Indigo 600
         break;
       case 'to do':
         label = 'Todo';
         icon = Icons.edit_note;
-        color = Colors.grey;
+        color = const Color(0xFF9CA3AF); // Neutral Gray 400
         break;
       case 'completed':
         label = 'Completed';
         icon = Icons.check_circle;
-        color = Colors.green;
+        color = const Color(0xFF10B981); // Emerald 500
         break;
       default:
         label = status;
         icon = Icons.help_outline;
-        color = Colors.black54;
+        color = const Color(0xFF374151); // Gray 700
     }
 
     return Chip(
-      avatar: Icon(icon, color: color, size: 18),
+      avatar: Icon(icon, color: AppPalette.magnolia, size: 18),
       label: Text(
         label,
-        style: AppTextStyles.bodyMedium.copyWith(color: color),
+        style: AppTextStyles.bodyMedium.copyWith(color: AppPalette.magnolia),
       ),
-      backgroundColor: AppPalette.magnolia,
-      shape: StadiumBorder(side: BorderSide(color: color, width: 0.5)),
+      backgroundColor: color,
+      shape: StadiumBorder(side: BorderSide(color: color, width: 0)),
     );
   }
 }
