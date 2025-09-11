@@ -1,12 +1,16 @@
+import 'dart:developer' as console;
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/project.dart';
 import '../../notifiers/project_notifier.dart';
 import '../../utils/components/app_button.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
 import '../../utils/features/project_helper.dart';
+import '../../utils/theme/app_palette.dart';
 
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
@@ -35,8 +39,11 @@ class _ProjectsPageState extends State<ProjectsPage> {
           _searchController.text,
           _selectedStatus,
         );
-
+        for (Project item in filteredProjects) {
+          console.log('Filtered Projects: ${item.toJson()}');
+        }
         return Scaffold(
+          backgroundColor: AppPalette.magnolia,
           appBar: AppBar(
             title: const Text('Projects'),
             actions: [
@@ -95,27 +102,32 @@ class _ProjectsPageState extends State<ProjectsPage> {
                             itemCount: filteredProjects.length,
                             itemBuilder: (context, index) {
                               final project = filteredProjects[index];
-                              return Card(
-                                color: Theme.of(context).colorScheme.surface,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        project.title,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.titleLarge,
-                                      ),
-                                      Text(
-                                        project.description,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Text('Status: ${project.status}'),
-                                    ],
+                              return InkWell(
+                                onTap:
+                                    () => context.push('/tasks/${project.id}'),
+                                child: Card(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          project.title,
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.titleLarge,
+                                        ),
+                                        Text(
+                                          project.description,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Text('Status: ${project.status}'),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
@@ -131,6 +143,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
                             rows:
                                 filteredProjects.map((project) {
                                   return DataRow(
+                                    onSelectChanged:
+                                        (_) => context.push(
+                                          '/tasks/${project.id}',
+                                        ),
                                     cells: [
                                       DataCell(Text(project.title)),
                                       DataCell(
