@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
+import '../../constants/animation_constants.dart';
 import '../theme/app_palette.dart' as palette;
 import '../theme/app_palette.dart';
 import '../theme/app_text_styles.dart';
@@ -32,58 +34,63 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final animation =
+        AnimationEffectConstants.usualAnimationEffects['buttonTapAnimation'];
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onPressed,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          height: height ?? 48,
-          padding: padding ?? const EdgeInsets.symmetric(horizontal: 12),
-          margin: margin ?? EdgeInsets.zero,
-          decoration: BoxDecoration(
-            color: backgroundColor ?? palette.AppPalette.raisinBlack,
-            borderRadius: BorderRadius.circular(borderRadius ?? 4),
-            border: Border.all(
-              color: AppPalette.primarySwatch.withOpacity(0.625),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.15),
-                spreadRadius: 0.5,
-                blurRadius: 1,
-                offset: const Offset(0, 0.5),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (prefixIcon != null) ...[
-                prefixIcon!,
-                const SizedBox(width: 8),
-              ],
-              Text(
-                text,
-                style:
-                    textstyle ??
-                    AppTextStyles.bodyLarge.copyWith(
-                      color: palette.AppPalette.magnolia,
-                    ),
-              ),
-              if (followersText != null)
-                Text(
-                  followersText!,
-                  style: AppTextStyles.labelLarge.copyWith(
-                    color: palette.AppPalette.periwinkle,
-                  ),
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: onPressed,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: height ?? 48,
+              padding: padding ?? const EdgeInsets.symmetric(horizontal: 12),
+              margin: margin ?? EdgeInsets.zero,
+              decoration: BoxDecoration(
+                color: backgroundColor ?? palette.AppPalette.raisinBlack,
+                borderRadius: BorderRadius.circular(borderRadius ?? 4),
+                border: Border.all(
+                  color: AppPalette.primarySwatch.withOpacity(0.625),
+                  width: 1,
                 ),
-            ],
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.15),
+                    spreadRadius: 0.5,
+                    blurRadius: 1,
+                    offset: const Offset(0, 0.5),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (prefixIcon != null) ...[
+                    prefixIcon!,
+                    const SizedBox(width: 8),
+                  ],
+                  Text(
+                    text,
+                    style:
+                        textstyle ??
+                        AppTextStyles.bodyLarge.copyWith(
+                          color: palette.AppPalette.magnolia,
+                        ),
+                  ),
+                  if (followersText != null)
+                    Text(
+                      followersText!,
+                      style: AppTextStyles.labelLarge.copyWith(
+                        color: palette.AppPalette.periwinkle,
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        )
+        .animate()
+        .then(delay: Duration(milliseconds: 200))
+        .addEffects(animation?.effectsBuilder ?? []);
   }
 }

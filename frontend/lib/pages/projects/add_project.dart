@@ -7,6 +7,8 @@ import '../../notifiers/project_notifier.dart';
 import '../../utils/components/app_button.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
+import '../../utils/theme/app_palette.dart';
+import '../../utils/theme/app_text_styles.dart';
 
 class AddProjectPage extends StatefulWidget {
   const AddProjectPage({super.key});
@@ -64,7 +66,27 @@ class _AddProjectPageState extends State<AddProjectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add New Project')),
+      appBar: AppBar(
+        title: const Text('Add New Project'),
+        actions: [
+          AppButton(
+            text: 'Save',
+            margin: const EdgeInsets.all(8),
+            backgroundColor: AppPalette.magnolia,
+            borderRadius: 16,
+            textstyle: AppTextStyles.bodyMedium.copyWith(
+              color: AppPalette.resolutionBlue,
+            ),
+            prefixIcon: Icon(
+              Icons.save_outlined,
+              color: AppPalette.resolutionBlue,
+              size: 18,
+            ),
+            onPressed: _isFormValid ? _submitForm : null, // Disable if invalid
+          ),
+          const SizedBox(width: 12),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -92,12 +114,6 @@ class _AddProjectPageState extends State<AddProjectPage> {
                 itemAsString: (status) => status,
                 onChanged:
                     (value) => setState(() => _status = value ?? 'in_progress'),
-              ),
-              const SizedBox(height: 16),
-              AppButton(
-                text: 'Add Project',
-                onPressed:
-                    _isFormValid ? _submitForm : null, // Disable if invalid
               ),
             ],
           ),

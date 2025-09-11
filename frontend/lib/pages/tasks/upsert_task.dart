@@ -7,6 +7,8 @@ import '../../notifiers/task_notifier.dart';
 import '../../utils/components/app_button.dart';
 import '../../utils/components/app_searchable_dropdowns.dart';
 import '../../utils/components/app_textfield.dart';
+import '../../utils/theme/app_palette.dart';
+import '../../utils/theme/app_text_styles.dart';
 
 class AddTaskPage extends StatefulWidget {
   final String projectId;
@@ -67,6 +69,24 @@ class _AddTaskPageState extends State<AddTaskPage> {
           onPressed: () => context.pop(),
         ),
         title: const Text('Add New Task'),
+        actions: [
+          AppButton(
+            text: 'Save',
+            margin: const EdgeInsets.all(8),
+            backgroundColor: AppPalette.magnolia,
+            borderRadius: 16,
+            textstyle: AppTextStyles.bodyMedium.copyWith(
+              color: AppPalette.resolutionBlue,
+            ),
+            prefixIcon: Icon(
+              Icons.save_outlined,
+              color: AppPalette.resolutionBlue,
+              size: 18,
+            ),
+            onPressed: _isFormValid ? _submitForm : null, // Disable if invalid
+          ),
+          const SizedBox(width: 12),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -94,12 +114,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 initialValue: 'todo',
                 itemAsString: (status) => status,
                 onChanged: (value) => setState(() => _status = value ?? 'todo'),
-              ),
-              const SizedBox(height: 16),
-              AppButton(
-                text: 'Add Task',
-                onPressed:
-                    _isFormValid ? _submitForm : null, // Disable if invalid
               ),
             ],
           ),

@@ -73,14 +73,19 @@ class _TasksPageState extends State<TasksPage> {
               AppButton(
                 text: 'Add Task',
                 margin: const EdgeInsets.all(8),
-                backgroundColor: AppPalette.resolutionBlue,
+                backgroundColor: AppPalette.magnolia,
                 borderRadius: 16,
-                textstyle: AppTextStyles.bodyLarge.copyWith(
-                  color: palette.AppPalette.magnolia,
+                textstyle: AppTextStyles.bodyMedium.copyWith(
+                  color: palette.AppPalette.resolutionBlue,
                 ),
-                prefixIcon: Icon(Icons.add, color: AppPalette.magnolia),
+                prefixIcon: Icon(
+                  Icons.add,
+                  color: AppPalette.resolutionBlue,
+                  size: 18,
+                ),
                 onPressed: () => context.push('/add-task/${widget.projectId}'),
               ),
+              const SizedBox(width: 12),
             ],
           ),
           body: Padding(

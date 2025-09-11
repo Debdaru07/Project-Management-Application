@@ -46,5 +46,31 @@ class AnimationEffectConstants {
         ),
       ],
     ),
+    'buttonTapAnimation': AnimationInfo(
+      effectsBuilder: [
+        ScaleEffect(
+          curve: Curves.easeOut,
+          duration: Duration(milliseconds: 100),
+          begin: const Offset(0.95, 0.95),
+          end: const Offset(1.0, 1.0),
+        ),
+      ],
+    ),
+    'pageChangeAnimation': AnimationInfo(
+      effectsBuilder: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          duration: Duration(milliseconds: 400),
+          begin: 0.0,
+          end: 1.0,
+        ),
+        MoveEffect(
+          curve: Curves.easeOut,
+          duration: Duration(milliseconds: 400),
+          begin: Offset(50.0, 0.0),
+          end: Offset(0.0, 0.0),
+        ),
+      ],
+    ),
   };
 }
